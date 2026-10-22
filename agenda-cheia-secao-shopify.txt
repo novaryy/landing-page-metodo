@@ -1,0 +1,677 @@
+{%- comment -%}
+  Método Agenda Cheia — página de vendas (seção única, responsiva: celular e computador).
+  Escolha o produto no seletor da seção; se vazio, usa o produto do template.
+{%- endcomment -%}
+{%- assign p = section.settings.product -%}
+{%- unless p -%}{%- assign p = product -%}{%- endunless -%}
+{%- if p == blank -%}
+  <p style="padding:40px 20px;text-align:center">Selecione um produto nas configurações desta seção.</p>
+{%- else -%}
+{%- assign v = p.selected_or_first_available_variant -%}
+{%- assign form_id = 'ac-buy-' | append: section.id -%}
+{%- assign has_compare = false -%}
+{%- if v.compare_at_price > v.price -%}{%- assign has_compare = true -%}{%- endif -%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap">
+
+<div
+  class="ac"
+  data-ac-root
+  data-ac-track="{% if section.settings.enable_tracking %}true{% else %}false{% endif %}"
+  data-item-id="{{ v.sku | default: p.id }}"
+  data-item-name="{{ p.title | escape }}"
+  data-price="{{ v.price | divided_by: 100.0 }}"
+  data-currency="{{ cart.currency.iso_code }}"
+>
+  {%- form 'product', p, id: form_id, data-ac-form: 'true' -%}
+    <input type="hidden" name="quantity" value="1">
+    <input type="hidden" name="return_to" value="/checkout">
+  {%- endform -%}<section class="ac-hero" aria-labelledby="ac-h1" data-ac-hero data-ac-hide-sticky>
+    <div class="ac-wrap ac-hero__grid">
+      <div class="ac-hero__copy">
+        <p class="ac-eyebrow">Você é manicure, lash designer ou cabeleireira?</p>
+        <h1 class="ac-h1" id="ac-h1">
+          Pare de postar sem saber o que fazer. <em>Planeje 30 dias de conteúdo</em> para divulgar seus serviços no Instagram.
+        </h1>
+        <p class="ac-lead">
+          Tenha ideias de conteúdo, ganchos, CTAs e um calendário organizado para divulgar seu trabalho com mais estratégia, sem precisar começar do zero todos os dias.
+        </p>
+
+        <div class="ac-price" aria-label="Preço">{% if has_compare %}<span class="ac-price__old">De <s>{{ v.compare_at_price | money }}</s> por</span>{% endif %}<strong class="ac-price__now">{{ v.price | money }}</strong></div>
+
+        <button
+  type="submit"
+  form="{{ form_id }}"
+  class="ac-btn"
+  data-ac-cta="hero"
+  {% unless v.available %}disabled{% endunless %}
+>QUERO DEIXAR MINHA AGENDA CHEIA</button>
+
+
+        <ul class="ac-notes">
+          <li>Produto digital</li>
+          <li>Acesso imediato</li>
+        </ul>
+      </div>
+
+      <div class="ac-hero__visual" aria-hidden="false">
+        <div class="ac-mock"><div class="ac-cover" role="img" aria-label="Capa do ebook Método Agenda Cheia">
+              <span class="ac-cover__tag">Guia estratégico</span>
+              <span class="ac-cover__title">Método<br>Agenda<br>Cheia</span>
+              <span class="ac-cover__rule"></span>
+              <span class="ac-cover__sub">Um plano de 30 dias para transformar seu Instagram em uma ferramenta de atração e agendamento de clientes</span>
+            </div><div class="ac-float ac-float--cal" aria-hidden="true">
+            <span class="ac-float__label">Calendário · 30 dias</span>
+            <div class="ac-mini-cal"><span class="is-gold"></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class="is-gold"></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class="is-gold"></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class="is-gold"></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span><span class=""></span></div>
+          </div>
+
+          <div class="ac-float ac-float--posts" aria-hidden="true">
+            <span class="ac-tile">Reels</span>
+            <span class="ac-tile">Carrossel</span>
+            <span class="ac-tile">Stories</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><section class="ac-sec ac-sec--beige" aria-labelledby="ac-dor">
+    <div class="ac-wrap">
+      <div class="ac-head">
+        <p class="ac-eyebrow">Você se reconhece?</p>
+        <h2 class="ac-h2" id="ac-dor">Você sabe que precisa postar, mas nem sempre sabe o que publicar?</h2>
+      </div>
+      <ul class="ac-grid ac-grid--3">
+        <li class="ac-card">
+          <span class="ac-ico"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg>
+</span>
+          <h3 class="ac-h3">Abrir o Instagram e não ter ideias para postar</h3>
+          <p>Você abre o aplicativo, olha para a tela e o tempo passa sem nenhuma publicação sair.</p>
+        </li>
+        <li class="ac-card">
+          <span class="ac-ico"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+</span>
+          <h3 class="ac-h3">Perder tempo criando conteúdo todos os dias</h3>
+          <p>Pensar em tema, legenda e chamada do zero toda vez consome a energia que poderia ir para o atendimento.</p>
+        </li>
+        <li class="ac-card">
+          <span class="ac-ico"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+</span>
+          <h3 class="ac-h3">Passar vários dias sem publicar</h3>
+          <p>Entre uma cliente e outra a rotina aperta, e o perfil acaba ficando parado.</p>
+        </li>
+        <li class="ac-card">
+          <span class="ac-ico"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+</span>
+          <h3 class="ac-h3">Não saber como apresentar os próprios serviços</h3>
+          <p>Você domina a técnica, mas falar sobre ela de forma clara e atraente nem sempre é simples.</p>
+        </li>
+        <li class="ac-card">
+          <span class="ac-ico"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg>
+</span>
+          <h3 class="ac-h3">Dificuldade para gerar contato a partir das publicações</h3>
+          <p>Postar é uma coisa; convidar a pessoa para chamar no direct ou agendar é outra.</p>
+        </li>
+        <li class="ac-card">
+          <span class="ac-ico"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+</span>
+          <h3 class="ac-h3">Serviço de qualidade, comunicação que não acompanha</h3>
+          <p>O seu trabalho merece ser mostrado com a mesma qualidade com que é feito.</p>
+        </li>
+      </ul>
+      <p class="ac-center-note">Se você se identificou, isso é mais comum do que parece, e uma boa parte da solução está em ter um plano.</p>
+    </div>
+  </section><section class="ac-sec" aria-labelledby="ac-solucao">
+    <div class="ac-wrap">
+      <div class="ac-head">
+        <p class="ac-eyebrow">A solução</p>
+        <h2 class="ac-h2" id="ac-solucao">Seu conteúdo pode ter mais planejamento e menos improviso.</h2>
+        <p class="ac-sub">O Método Agenda Cheia é uma ferramenta prática para organizar o conteúdo de um mês inteiro: ideias de posts para profissionais da beleza, ganchos, CTAs e um calendário de conteúdo para Instagram.</p>
+      </div>
+      <ol class="ac-grid ac-grid--5">
+        <li class="ac-feat">
+          <span class="ac-ico ac-ico--gold"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+</span>
+          <h3 class="ac-h3">Planejamento para 30 dias</h3>
+          <p>Um mês organizado em quatro semanas, cada uma com um objetivo: conexão e autoridade, educação, prova social e conversão.</p>
+        </li>
+        <li class="ac-feat">
+          <span class="ac-ico ac-ico--gold"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg>
+</span>
+          <h3 class="ac-h3">Ideias de publicações</h3>
+          <p>Temas como antes e depois, mito x verdade, bastidores, depoimentos e cuidados pós-procedimento, prontos para adaptar.</p>
+        </li>
+        <li class="ac-feat">
+          <span class="ac-ico ac-ico--gold"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></svg>
+</span>
+          <h3 class="ac-h3">Ganchos que chamam atenção</h3>
+          <p>Um banco com 30 ganchos para usar como primeira frase de vídeos e legendas quando bater o bloqueio.</p>
+        </li>
+        <li class="ac-feat">
+          <span class="ac-ico ac-ico--gold"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
+</span>
+          <h3 class="ac-h3">CTAs por objetivo</h3>
+          <p>Chamadas para ação organizadas por comentários, salvamentos, compartilhamentos, seguidores, direct, WhatsApp e agendamento.</p>
+        </li>
+        <li class="ac-feat">
+          <span class="ac-ico ac-ico--gold"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+</span>
+          <h3 class="ac-h3">Calendário organizado</h3>
+          <p>Cada dia traz objetivo, roteiro de vídeo, legenda, CTA, ideia de Story e tempo estimado de produção.</p>
+        </li>
+      </ol>
+    </div>
+  </section><section class="ac-sec ac-sec--nude" aria-labelledby="ac-como">
+    <div class="ac-wrap">
+      <div class="ac-head">
+        <p class="ac-eyebrow">Como funciona</p>
+        <h2 class="ac-h2" id="ac-como">Do material ao calendário, em três passos.</h2>
+      </div>
+      <ol class="ac-grid ac-grid--3 ac-steps">
+        <li class="ac-step">
+          <span class="ac-step__n">01</span>
+          <h3 class="ac-h3">Acesse o material</h3>
+          <p>Receba o produto digital conforme as condições de entrega configuradas na loja.</p>
+        </li>
+        <li class="ac-step">
+          <span class="ac-step__n">02</span>
+          <h3 class="ac-h3">Organize suas publicações</h3>
+          <p>Use as ideias, os ganchos, os CTAs e o calendário para planejar o seu conteúdo.</p>
+        </li>
+        <li class="ac-step">
+          <span class="ac-step__n">03</span>
+          <h3 class="ac-h3">Coloque em prática</h3>
+          <p>Adapte as sugestões à sua especialidade, ao seu estilo e aos serviços que você oferece.</p>
+        </li>
+      </ol>
+    </div>
+  </section><section class="ac-sec" aria-labelledby="ac-incluso">
+    <div class="ac-wrap">
+      <div class="ac-head">
+        <p class="ac-eyebrow">O que está incluído</p>
+        <h2 class="ac-h2" id="ac-incluso">Uma prévia do que você encontra dentro do material.</h2>
+        <p class="ac-sub">Os exemplos abaixo vêm do próprio conteúdo do ebook (50 páginas).</p>
+      </div>
+
+      <div class="ac-weeks">
+        <article class="ac-week">
+          <h3 class="ac-h3"><span>Semana 1 · Dias 1–7</span>Conexão e Autoridade</h3>
+          <ol class="ac-days" start="1"><li><b>1</b> Sua história</li><li><b>2</b> Antes e depois</li><li><b>3</b> Mito x Verdade</li><li><b>4</b> Dica rápida de 60 segundos</li><li><b>5</b> Bastidores do espaço</li><li><b>6</b> Pergunta ao público</li><li><b>7</b> Autoestima em foco</li></ol>
+        </article>
+        <article class="ac-week">
+          <h3 class="ac-h3"><span>Semana 2 · Dias 8–14</span>Educação e Valor</h3>
+          <ol class="ac-days" start="8"><li><b>8</b> Tutorial passo a passo</li><li><b>9</b> Erros comuns</li><li><b>10</b> Comparação de técnicas</li><li><b>11</b> Glossário do nicho</li><li><b>12</b> Bastidores dos produtos</li><li><b>13</b> Cuidados pós-procedimento</li><li><b>14</b> Sessão de perguntas ao vivo</li></ol>
+        </article>
+        <article class="ac-week">
+          <h3 class="ac-h3"><span>Semana 3 · Dias 15–21</span>Prova Social e Bastidores</h3>
+          <ol class="ac-days" start="15"><li><b>15</b> Depoimento em destaque</li><li><b>16</b> Repost de cliente</li><li><b>17</b> Um dia no salão/estúdio</li><li><b>18</b> Apresente a equipe</li><li><b>19</b> Case completo</li><li><b>20</b> Enquete de tendências</li><li><b>21</b> Curiosidade sobre a profissão</li></ol>
+        </article>
+        <article class="ac-week">
+          <h3 class="ac-h3"><span>Semana 4 · Dias 22–30</span>Vendas e Conversão</h3>
+          <ol class="ac-days" start="22"><li><b>22</b> Anúncio de promoção</li><li><b>23</b> Contagem regressiva</li><li><b>24</b> Como agendar</li><li><b>25</b> Pacote de fidelidade</li><li><b>26</b> Depoimento em vídeo</li><li><b>27</b> Oferta relâmpago</li><li><b>28</b> Bastidores de um evento especial</li><li><b>29</b> Recapitulação do mês</li><li><b>30</b> Convite final</li></ol>
+        </article>
+      </div>
+
+      <div class="ac-preview-grid">
+        <article class="ac-sample" aria-label="Exemplo de dia do calendário">
+          <p class="ac-eyebrow">Exemplo de dia · Dia 02</p>
+          <h3 class="ac-h3">Antes e depois</h3>
+          <dl>
+            <dt>Objetivo</dt><dd>Provar resultado de forma visual e gerar desejo.</dd>
+            <dt>Gancho do vídeo</dt><dd>“De opaco pra impecável em [tempo].”</dd>
+            <dt>CTA</dt><dd>“Me chama no direct com a palavra RESULTADO.”</dd>
+            <dt>Ideia de Story</dt><dd>Foto do “antes” com contagem regressiva até postar o “depois”.</dd>
+            <dt>Tempo estimado</dt><dd>15 min (+ autorização do cliente)</dd>
+          </dl>
+        </article>
+
+        <article class="ac-sample" aria-label="Exemplos de ganchos">
+          <p class="ac-eyebrow">Banco de 30 ganchos</p>
+          <h3 class="ac-h3">Exemplos de ganchos</h3>
+          <ul class="ac-quotes"><li>3 erros que podem estar prejudicando seu [resultado].</li><li>Ninguém te conta isso sobre [procedimento].</li><li>O erro nº1 que eu mais vejo em [nicho].</li><li>O que fazer nas primeiras 48h depois de [procedimento].</li><li>Testei [técnica/produto] para você não precisar testar.</li><li>Isso não é frescura, é técnica.</li></ul>
+        </article>
+      </div></div>
+  </section><section class="ac-sec ac-sec--beige" aria-labelledby="ac-benef">
+    <div class="ac-wrap">
+      <div class="ac-head">
+        <p class="ac-eyebrow">Benefícios</p>
+        <h2 class="ac-h2" id="ac-benef">Mais clareza para planejar o conteúdo do seu negócio.</h2>
+      </div>
+      <ul class="ac-grid ac-grid--3">
+        <li class="ac-benefit"><span class="ac-ico ac-ico--gold"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+</span><p><b>Menos tempo pensando no que postar.</b> Você chega com o tema do dia já definido.</p></li>
+        <li class="ac-benefit"><span class="ac-ico ac-ico--gold"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+</span><p><b>Publicações organizadas com antecedência.</b> Dá para produzir em lote e se programar.</p></li>
+        <li class="ac-benefit"><span class="ac-ico ac-ico--gold"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg>
+</span><p><b>Ideias para diferentes momentos do mês.</b> Conexão, educação, prova social e convite para agendar.</p></li>
+        <li class="ac-benefit"><span class="ac-ico ac-ico--gold"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+</span><p><b>Divulgação com mais estratégia.</b> Cada publicação tem um objetivo e uma chamada para ação.</p></li>
+        <li class="ac-benefit"><span class="ac-ico ac-ico--gold"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+</span><p><b>Mais consistência no Instagram.</b> Um plano ajuda a manter a regularidade na rotina corrida.</p></li>
+        <li class="ac-benefit"><span class="ac-ico ac-ico--gold"><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg>
+</span><p><b>Adaptação à sua especialidade.</b> Troque os exemplos pelos termos reais do seu serviço.</p></li>
+      </ul>
+    </div>
+  </section><section class="ac-sec" aria-labelledby="ac-quem">
+    <div class="ac-wrap">
+      <div class="ac-head">
+        <p class="ac-eyebrow">Para quem é</p>
+        <h2 class="ac-h2" id="ac-quem">O Método Agenda Cheia é para você?</h2>
+      </div>
+      <div class="ac-two">
+        <div class="ac-col ac-col--yes">
+          <h3 class="ac-h3">É para você que:</h3>
+          <ul>
+            <li><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6L9 17l-5-5"/></svg>
+Trabalha com beleza.</li>
+            <li><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6L9 17l-5-5"/></svg>
+Quer melhorar a divulgação dos seus serviços.</li>
+            <li><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6L9 17l-5-5"/></svg>
+Tem dificuldade para criar conteúdo.</li>
+            <li><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6L9 17l-5-5"/></svg>
+Deseja organizar as publicações.</li>
+            <li><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6L9 17l-5-5"/></svg>
+Está disposta a colocar as ideias em prática.</li>
+          </ul>
+        </div>
+        <div class="ac-col ac-col--no">
+          <h3 class="ac-h3">Não é para você que:</h3>
+          <ul>
+            <li><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6L6 18M6 6l12 12"/></svg>
+Espera resultados sem executar nenhuma ação.</li>
+            <li><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6L6 18M6 6l12 12"/></svg>
+Procura garantia de clientes ou de faturamento.</li>
+            <li><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 6L6 18M6 6l12 12"/></svg>
+Não pretende utilizar o material.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="ac-seo-text">
+        Seja para conteúdo de Instagram de manicure, ideias de posts para lash designer, cabeleireira, designer de sobrancelhas ou esteticista, ou para o planejamento de conteúdo de um salão de beleza, o ponto de partida é o mesmo: saber o que comunicar e com qual objetivo. É esse o papel do método, ajudar você a entender como divulgar serviços de beleza com constância e clareza, e a pensar em como atrair clientes pelo Instagram sem depender só do improviso.
+      </p>
+    </div>
+  </section><section class="ac-sec ac-sec--dark" id="oferta" aria-labelledby="ac-oferta" data-ac-hide-sticky>
+    <div class="ac-wrap">
+      <div class="ac-offer">
+        <div class="ac-offer__copy">
+          <p class="ac-eyebrow ac-eyebrow--light">A oferta</p>
+          <h2 class="ac-h2" id="ac-oferta">Método Agenda Cheia</h2>
+          <p class="ac-sub">Planejamento de conteúdo para 30 dias, ideias de publicações, ganchos, CTAs e calendário, em um material digital para você aplicar no seu ritmo.</p>
+          <ul class="ac-checks ac-checks--light">
+            <li><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6L9 17l-5-5"/></svg>
+Calendário de 30 dias, em 4 semanas temáticas</li>
+            <li><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6L9 17l-5-5"/></svg>
+Para cada dia: objetivo, roteiro de vídeo, legenda, CTA e ideia de Story</li>
+            <li><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6L9 17l-5-5"/></svg>
+Banco de 30 ganchos e banco de 20 CTAs</li>
+            <li><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6L9 17l-5-5"/></svg>
+Plano de Stories, guia por nicho e modelos de legenda</li>
+            <li><svg class="ac-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20 6L9 17l-5-5"/></svg>
+Ebook digital em PDF · 50 páginas</li>
+          </ul>
+        </div>
+        <div class="ac-offer__box">
+          <p class="ac-offer__name">Método Agenda Cheia</p>
+          <div class="ac-price ac-price--light">{% if has_compare %}<span class="ac-price__old">De <s>{{ v.compare_at_price | money }}</s> por</span>{% endif %}<strong class="ac-price__now">{{ v.price | money }}</strong></div>
+          <button
+  type="submit"
+  form="{{ form_id }}"
+  class="ac-btn"
+  data-ac-cta="oferta"
+  {% unless v.available %}disabled{% endunless %}
+>QUERO MEU MÉTODO AGENDA CHEIA</button>
+
+          <p class="ac-offer__fine">Produto digital. Pagamento e entrega pelo checkout da Shopify, conforme as condições da loja.</p>
+          <p class="ac-offer__fine">O material não garante quantidade de clientes, vendas ou faturamento. Os resultados dependem da sua aplicação e de fatores como mercado e região.</p>
+        </div>
+      </div>
+    </div>
+  </section><section class="ac-sec ac-sec--beige" aria-labelledby="ac-faq">
+    <div class="ac-wrap ac-wrap--narrow">
+      <div class="ac-head">
+        <p class="ac-eyebrow">Perguntas frequentes</p>
+        <h2 class="ac-h2" id="ac-faq">Tire suas dúvidas</h2>
+      </div>
+      <div class="ac-faq"><details>
+            <summary><h3>O que é o Método Agenda Cheia?</h3></summary>
+            <p>É um material digital de planejamento de conteúdo para Instagram, voltado a profissionais da beleza. Ele reúne um calendário de 30 dias com ideias de publicações, ganchos e CTAs para você organizar o que postar, quando postar e por quê.</p>
+          </details><details>
+            <summary><h3>Para quem ele foi desenvolvido?</h3></summary>
+            <p>Para manicures, lash designers, cabeleireiras, designers de sobrancelhas, esteticistas, profissionais autônomas e donas de salão que querem divulgar seus serviços com mais organização.</p>
+          </details><details>
+            <summary><h3>Como recebo o produto?</h3></summary>
+            <p>Este é um produto digital, sem envio físico. A forma e o prazo de acesso ao material seguem as condições de entrega configuradas na loja e informadas na confirmação do pedido.</p>
+          </details><details>
+            <summary><h3>Preciso entender de marketing digital?</h3></summary>
+            <p>Não. O material foi pensado para a rotina de quem atende clientes: cada dia traz objetivo, roteiro de vídeo, legenda para adaptar, CTA e ideia de Story, em linguagem simples.</p>
+          </details><details>
+            <summary><h3>O material serve para iniciantes?</h3></summary>
+            <p>Sim. Você pode seguir a sequência sugerida ou escolher os dias que fazem sentido para o seu momento. O próprio material sugere postar de 3 a 5 dias por semana, sem a obrigação de publicar todos os dias.</p>
+          </details><details>
+            <summary><h3>Posso adaptar as ideias à minha especialidade?</h3></summary>
+            <p>Sim. Os exemplos são um ponto de partida. O material traz um guia com temas técnicos e termos-chave para unhas, cílios, cabelo, sobrancelha e estética, para você adaptar legendas e roteiros à sua especialidade e à sua voz.</p>
+          </details><details>
+            <summary><h3>O método garante uma agenda cheia?</h3></summary>
+            <p>Não. O Método Agenda Cheia é uma ferramenta de organização e planejamento de conteúdo. Ele não garante quantidade de clientes, agendamentos, vendas ou faturamento. Os resultados dependem de fatores como a sua execução, o seu mercado, a sua região e a qualidade do seu atendimento.</p>
+          </details><details>
+            <summary><h3>Quais são as formas de pagamento?</h3></summary>
+            <p>Aceitamos cartão de crédito, cartão de débito e Pix.</p>
+          </details></div>
+    </div>
+  </section><section class="ac-sec ac-final" aria-labelledby="ac-final" data-ac-hide-sticky>
+    <div class="ac-wrap ac-wrap--narrow ac-center">
+      <h2 class="ac-h2" id="ac-final">Chega de perder tempo tentando descobrir o que postar.</h2>
+      <p class="ac-sub">Organize suas ideias, planeje seus conteúdos e divulgue seus serviços de beleza com mais clareza e consistência.</p>
+      <button
+  type="submit"
+  form="{{ form_id }}"
+  class="ac-btn"
+  data-ac-cta="final"
+  {% unless v.available %}disabled{% endunless %}
+>QUERO DEIXAR MINHA AGENDA CHEIA</button>
+
+    </div>
+  </section><div class="ac-sticky" data-ac-sticky>
+      <div class="ac-sticky__price">{% if has_compare %}<s>{{ v.compare_at_price | money }}</s>{% endif %}<strong>{{ v.price | money }}</strong></div>
+      <button
+  type="submit"
+  form="{{ form_id }}"
+  class="ac-btn ac-btn--sm"
+  data-ac-cta="fixo"
+  {% unless v.available %}disabled{% endunless %}
+>QUERO MEU MÉTODO</button>
+
+    </div></div><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+      "@type": "Question",
+      "name": "O que é o Método Agenda Cheia?",
+      "acceptedAnswer": { "@type": "Answer", "text": "É um material digital de planejamento de conteúdo para Instagram, voltado a profissionais da beleza. Ele reúne um calendário de 30 dias com ideias de publicações, ganchos e CTAs para você organizar o que postar, quando postar e por quê." }
+    },{
+      "@type": "Question",
+      "name": "Para quem ele foi desenvolvido?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Para manicures, lash designers, cabeleireiras, designers de sobrancelhas, esteticistas, profissionais autônomas e donas de salão que querem divulgar seus serviços com mais organização." }
+    },{
+      "@type": "Question",
+      "name": "Como recebo o produto?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Este é um produto digital, sem envio físico. A forma e o prazo de acesso ao material seguem as condições de entrega configuradas na loja e informadas na confirmação do pedido." }
+    },{
+      "@type": "Question",
+      "name": "Preciso entender de marketing digital?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Não. O material foi pensado para a rotina de quem atende clientes: cada dia traz objetivo, roteiro de vídeo, legenda para adaptar, CTA e ideia de Story, em linguagem simples." }
+    },{
+      "@type": "Question",
+      "name": "O material serve para iniciantes?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sim. Você pode seguir a sequência sugerida ou escolher os dias que fazem sentido para o seu momento. O próprio material sugere postar de 3 a 5 dias por semana, sem a obrigação de publicar todos os dias." }
+    },{
+      "@type": "Question",
+      "name": "Posso adaptar as ideias à minha especialidade?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sim. Os exemplos são um ponto de partida. O material traz um guia com temas técnicos e termos-chave para unhas, cílios, cabelo, sobrancelha e estética, para você adaptar legendas e roteiros à sua especialidade e à sua voz." }
+    },{
+      "@type": "Question",
+      "name": "O método garante uma agenda cheia?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Não. O Método Agenda Cheia é uma ferramenta de organização e planejamento de conteúdo. Ele não garante quantidade de clientes, agendamentos, vendas ou faturamento. Os resultados dependem de fatores como a sua execução, o seu mercado, a sua região e a qualidade do seu atendimento." }
+    },{
+      "@type": "Question",
+      "name": "Quais são as formas de pagamento?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Aceitamos cartão de crédito, cartão de débito e Pix." }
+    }]
+}
+</script>
+
+<style>
+{% raw %}
+.ac{--ac-gold:#B08945;--ac-gold-deep:#7D5F26;--ac-gold-hover:#C29A55;--ac-ink:#2B2620;--ac-ink-soft:#5B534A;--ac-nude:#F3E4E6;--ac-cream:#FFFCFA;--ac-beige:#F7F2EC;--ac-line:rgba(43,38,32,.12);--ac-serif:"Playfair Display","Cormorant Garamond",Georgia,serif;--ac-sans:"Inter","DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;font-family:var(--ac-sans);font-size:16px;line-height:1.6;color:var(--ac-ink);background:var(--ac-cream);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.ac *,.ac *::before,.ac *::after{box-sizing:border-box}
+:where(.ac) :where(h1,h2,h3,p,ul,ol,figure,dl,dd){margin:0;padding:0}
+:where(.ac) :where(ul,ol){list-style:none}
+:where(.ac) :where(img){max-width:100%;height:auto;display:block}
+:where(.ac) :where(a){color:inherit}
+.ac-wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 20px}
+.ac-wrap--narrow{max-width:760px}
+.ac-center{text-align:center}
+.ac-sec{padding:56px 0}
+.ac-sec--beige{background:var(--ac-beige)}
+.ac-sec--nude{background:var(--ac-nude)}
+.ac-sec--dark{background:var(--ac-ink);color:var(--ac-cream)}
+.ac-head{max-width:720px;margin:0 auto 36px;text-align:center}
+.ac-eyebrow{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--ac-gold-deep);margin-bottom:14px}
+.ac-eyebrow--light{color:var(--ac-gold)}
+.ac-h1,.ac-h2,.ac-h3{font-family:var(--ac-serif);font-weight:600;letter-spacing:-.01em;color:inherit}
+.ac-h1{font-size:clamp(2rem,8vw,3.5rem);line-height:1.1;margin-bottom:20px}
+.ac-h1 em{font-style:italic;color:var(--ac-gold-deep)}
+.ac-h2{font-size:clamp(1.65rem,5.6vw,2.6rem);line-height:1.18}
+.ac-h3{font-size:1.15rem;line-height:1.3}
+.ac-lead{font-size:1.08rem;color:var(--ac-ink-soft);margin-bottom:24px;max-width:560px}
+.ac-sub{font-size:1.05rem;color:var(--ac-ink-soft);margin-top:16px}
+.ac-sec--dark .ac-sub{color:rgba(255,252,250,.78)}
+.ac-center-note{text-align:center;margin:32px auto 0;max-width:560px;color:var(--ac-ink-soft)}
+
+/* botão */
+.ac-btn{appearance:none;-webkit-appearance:none;border:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;width:100%;min-height:56px;padding:16px 28px;border-radius:999px;background:var(--ac-gold);color:var(--ac-ink);font:600 .92rem/1.2 var(--ac-sans);letter-spacing:.05em;text-transform:uppercase;text-align:center;text-decoration:none;transition:background-color .15s ease,transform .15s ease}
+.ac-btn:hover{background:var(--ac-gold-hover)}
+.ac-btn:active{transform:translateY(1px)}
+.ac-btn:focus-visible{outline:3px solid var(--ac-ink);outline-offset:3px}
+.ac-sec--dark .ac-btn:focus-visible{outline-color:var(--ac-nude)}
+.ac-btn[disabled]{opacity:.6;cursor:not-allowed}
+.ac-btn--sm{min-height:48px;padding:12px 18px;font-size:.8rem;width:auto;flex:1}
+@media(min-width:640px){.ac-hero .ac-btn,.ac-final .ac-btn{width:auto}}
+
+/* ícones */
+.ac-icon{width:24px;height:24px;flex:none}
+.ac-ico{flex:none;display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--ac-nude);color:var(--ac-gold-deep);margin-bottom:16px}
+.ac-ico--gold{background:var(--ac-ink);color:var(--ac-gold)}
+
+/* hero */
+.ac-hero{background:linear-gradient(180deg,var(--ac-nude) 0%,var(--ac-cream) 100%);padding:40px 0 56px;overflow:hidden}
+.ac-hero__grid{display:grid;gap:40px;align-items:center}
+.ac-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin:0 0 20px}
+.ac-price__old{color:var(--ac-ink-soft);font-size:1rem}
+.ac-price__old s{opacity:.8}
+.ac-price__now{font-family:var(--ac-serif);font-size:2.6rem;line-height:1;color:var(--ac-ink)}
+.ac-price--light .ac-price__old{color:rgba(255,252,250,.75)}
+.ac-price--light .ac-price__now{color:var(--ac-gold)}
+.ac-notes{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:16px;font-size:.85rem;color:var(--ac-ink-soft)}
+.ac-notes li::before{content:"";display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:var(--ac-gold);vertical-align:middle}
+
+/* mockup */
+.ac-mock{position:relative;width:100%;max-width:340px;margin:0 auto;padding:8px 0 28px}
+.ac-cover{position:relative;aspect-ratio:3/4;display:flex;flex-direction:column;justify-content:center;padding:10% 10%;background:linear-gradient(160deg,#41382f,var(--ac-ink) 62%);color:var(--ac-cream);border-radius:6px 14px 14px 6px;box-shadow:0 30px 50px -20px rgba(43,38,32,.5),inset 7px 0 0 rgba(255,255,255,.06)}
+.ac-cover--img{padding:0;background:none;overflow:hidden}
+.ac-cover--img img{width:100%;height:100%;object-fit:cover}
+.ac-cover__tag{font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--ac-gold);margin-bottom:18px}
+.ac-cover__title{font-family:var(--ac-serif);font-weight:700;font-size:clamp(2rem,9vw,2.7rem);line-height:1;text-transform:uppercase}
+.ac-cover__rule{display:block;width:56px;height:3px;background:var(--ac-gold);margin:20px 0}
+.ac-cover__sub{font-size:.72rem;line-height:1.5;letter-spacing:.04em;text-transform:uppercase;opacity:.85}
+.ac-float{position:absolute;background:var(--ac-cream);border:1px solid var(--ac-line);border-radius:14px;box-shadow:0 14px 30px -14px rgba(43,38,32,.35)}
+.ac-float--cal{left:-6px;bottom:0;padding:10px 12px;width:132px}
+.ac-float__label{display:block;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;color:var(--ac-ink-soft);margin-bottom:6px}
+.ac-mini-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.ac-mini-cal span{aspect-ratio:1;border-radius:2px;background:var(--ac-nude)}
+.ac-mini-cal span.is-gold{background:var(--ac-gold)}
+.ac-float--posts{right:-6px;top:28px;padding:8px;display:grid;gap:6px;background:var(--ac-nude)}
+.ac-tile{display:block;padding:6px 10px;border-radius:8px;background:var(--ac-cream);font-size:.62rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ac-ink)}
+
+/* grids e cards */
+.ac-grid{display:grid;gap:16px}
+.ac-card,.ac-feat,.ac-benefit,.ac-step{background:var(--ac-cream);border:1px solid var(--ac-line);border-radius:18px;padding:24px}
+.ac-card p,.ac-feat p,.ac-step p{color:var(--ac-ink-soft);margin-top:8px;font-size:.97rem}
+.ac-feat{background:var(--ac-beige)}
+.ac-benefit{display:flex;gap:16px;align-items:flex-start}
+.ac-benefit .ac-ico{margin:0}
+.ac-benefit p{font-size:.97rem;color:var(--ac-ink-soft)}
+.ac-benefit b{color:var(--ac-ink);font-weight:600}
+.ac-step__n{display:block;font-family:var(--ac-serif);font-size:2.4rem;line-height:1;color:var(--ac-gold-deep);margin-bottom:12px}
+
+/* incluído */
+.ac-weeks{display:grid;gap:16px;margin-bottom:24px}
+.ac-week{background:var(--ac-beige);border-radius:18px;padding:22px}
+.ac-week .ac-h3 span{display:block;font-family:var(--ac-sans);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ac-gold-deep);margin-bottom:6px}
+.ac-days{margin-top:14px;display:grid;gap:6px;font-size:.92rem}
+.ac-days li{display:flex;gap:10px;align-items:baseline}
+.ac-days b{flex:none;min-width:22px;color:var(--ac-gold-deep);font-weight:600}
+.ac-preview-grid{display:grid;gap:16px;max-width:880px;margin:0 auto}
+.ac-sample{border:1px solid var(--ac-line);border-radius:18px;padding:24px;background:var(--ac-cream)}
+.ac-sample .ac-h3{margin-bottom:14px}
+.ac-sample dl{display:grid;gap:10px}
+.ac-sample dt{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--ac-gold-deep)}
+.ac-sample dd{font-size:.95rem;color:var(--ac-ink-soft);margin-bottom:2px}
+.ac-quotes{display:grid;gap:10px}
+.ac-quotes li{padding:12px 14px;border-left:3px solid var(--ac-gold);background:var(--ac-beige);border-radius:0 10px 10px 0;font-size:.93rem;font-style:italic}
+.ac-checks{display:grid;gap:12px}
+.ac-checks li{display:flex;gap:10px;align-items:flex-start}
+.ac-checks .ac-icon{width:20px;height:20px;margin-top:3px;color:var(--ac-gold-deep)}
+.ac-checks--light .ac-icon{color:var(--ac-gold)}
+.ac-gallery{display:grid;gap:16px;margin-top:24px}
+.ac-gallery img{border-radius:12px;border:1px solid var(--ac-line)}
+.ac-placeholder{display:flex;align-items:center;justify-content:center;aspect-ratio:3/4;border:2px dashed var(--ac-gold);border-radius:12px;color:var(--ac-gold-deep);font-size:.85rem;text-align:center;padding:16px}
+
+/* para quem */
+.ac-two{display:grid;gap:16px}
+.ac-col{border-radius:18px;padding:26px}
+.ac-col--yes{background:var(--ac-nude)}
+.ac-col--no{background:var(--ac-beige)}
+.ac-col ul{display:grid;gap:12px;margin-top:16px}
+.ac-col li{display:flex;gap:10px;align-items:flex-start}
+.ac-col .ac-icon{width:20px;height:20px;margin-top:3px}
+.ac-col--yes .ac-icon{color:var(--ac-gold-deep)}
+.ac-col--no .ac-icon{color:var(--ac-ink-soft)}
+.ac-seo-text{max-width:760px;margin:32px auto 0;color:var(--ac-ink-soft);font-size:.97rem;text-align:center}
+
+/* oferta */
+.ac-offer{display:grid;gap:32px;align-items:center}
+.ac-offer .ac-h2{color:var(--ac-cream)}
+.ac-offer .ac-checks{margin-top:22px}
+.ac-offer__box{background:#352E27;border:1px solid rgba(176,137,69,.55);border-radius:22px;padding:28px}
+.ac-offer__name{font-family:var(--ac-serif);font-size:1.4rem;margin-bottom:14px}
+.ac-offer__fine{font-size:.8rem;line-height:1.5;color:rgba(255,252,250,.7);margin-top:14px}
+
+/* faq */
+.ac-faq{display:grid;gap:10px}
+.ac-faq details{background:var(--ac-cream);border:1px solid var(--ac-line);border-radius:14px}
+.ac-faq summary{list-style:none;cursor:pointer;padding:18px 52px 18px 20px;position:relative;min-height:56px;display:flex;align-items:center}
+.ac-faq summary::-webkit-details-marker{display:none}
+.ac-faq summary h3{font-family:var(--ac-sans);font-size:1rem;font-weight:600;letter-spacing:0}
+.ac-faq summary::after{content:"+";position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:1.5rem;line-height:1;color:var(--ac-gold-deep)}
+.ac-faq details[open] summary::after{content:"–"}
+.ac-faq summary:focus-visible{outline:3px solid var(--ac-gold-deep);outline-offset:2px;border-radius:14px}
+.ac-faq details p{padding:0 20px 20px;color:var(--ac-ink-soft)}
+
+/* final + rodapé */
+.ac-final{background:var(--ac-nude)}
+.ac-final .ac-btn{margin-top:28px}
+
+/* barra fixa (só celular) */
+.ac-sticky{position:fixed;left:0;right:0;bottom:0;z-index:40;display:none;align-items:center;gap:14px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:var(--ac-cream);border-top:1px solid var(--ac-line);box-shadow:0 -8px 24px -12px rgba(43,38,32,.25);visibility:hidden;transform:translateY(100%);transition:transform .2s ease,visibility 0s linear .2s}
+.ac-sticky.is-visible{visibility:visible;transform:none;transition:transform .2s ease}
+.ac-sticky__price{display:flex;flex-direction:column;line-height:1.15}
+.ac-sticky__price s{font-size:.75rem;color:var(--ac-ink-soft)}
+.ac-sticky__price strong{font-family:var(--ac-serif);font-size:1.35rem}
+@media(max-width:899px){.ac-sticky{display:flex}.ac-final{padding-bottom:calc(56px + 72px)}}
+
+/* telas maiores */
+@media(min-width:640px){
+  .ac-grid--3,.ac-weeks,.ac-two{grid-template-columns:repeat(2,1fr)}
+  .ac-preview-grid{grid-template-columns:repeat(2,1fr)}
+  .ac-sample--wide{grid-column:1/-1}
+  .ac-gallery{grid-template-columns:repeat(3,1fr)}
+  }
+@media(min-width:900px){
+  .ac-wrap{padding:0 32px}
+  .ac-sec{padding:96px 0}
+  .ac-hero{padding:72px 0 96px}
+  .ac-hero__grid{grid-template-columns:1.1fr .9fr;gap:64px}
+  .ac-mock{max-width:400px}
+  .ac-float--cal{left:-36px;width:156px}
+  .ac-float--posts{right:-30px}
+  .ac-grid--3{grid-template-columns:repeat(3,1fr)}
+  .ac-grid--5{grid-template-columns:repeat(6,1fr)}
+  .ac-grid--5 .ac-feat{grid-column:span 2}
+  .ac-grid--5 .ac-feat:nth-child(4){grid-column:2/span 2}
+  .ac-grid--5 .ac-feat:nth-child(5){grid-column:span 2}
+  .ac-weeks{grid-template-columns:repeat(4,1fr)}
+  .ac-sample--wide{grid-column:1/-1}
+  .ac-sample--wide .ac-checks{grid-template-columns:repeat(2,1fr)}
+  .ac-offer{grid-template-columns:1.1fr .9fr;gap:56px}
+}
+@media(prefers-reduced-motion:reduce){.ac *{transition:none!important}}
+{% endraw %}
+</style>
+
+<script>
+{% raw %}
+(function () {
+  function init(root) {
+    if (!root || root.__acInit) return;
+    root.__acInit = true;
+
+    /* Barra fixa: aparece quando hero, oferta, CTA final e rodapé estão fora da tela */
+    var sticky = root.querySelector('[data-ac-sticky]');
+    if (sticky && 'IntersectionObserver' in window) {
+      var seen = new Set();
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) seen.add(e.target); else seen.delete(e.target);
+        });
+        sticky.classList.toggle('is-visible', seen.size === 0);
+      });
+      root.querySelectorAll('[data-ac-hide-sticky]').forEach(function (el) { io.observe(el); });
+    }
+
+    /* Eventos opcionais (desligados por padrão para evitar duplicidade com os apps da Shopify) */
+    if (root.getAttribute('data-ac-track') !== 'true') return;
+    var id = root.getAttribute('data-item-id');
+    if (!id) return;
+    var item = {
+      item_id: id,
+      item_name: root.getAttribute('data-item-name'),
+      price: parseFloat(root.getAttribute('data-price')) || 0,
+      quantity: 1
+    };
+    var currency = root.getAttribute('data-currency') || 'BRL';
+
+    function gaEvent(name) {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', name, { currency: currency, value: item.price, items: [item] });
+      }
+    }
+    function fbEvent(name) {
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', name, { content_ids: [id], content_type: 'product', content_name: item.item_name, value: item.price, currency: currency });
+      }
+    }
+
+    gaEvent('view_item');
+    fbEvent('ViewContent');
+
+    var form = root.querySelector('[data-ac-form]');
+    if (form) {
+      form.addEventListener('submit', function () {
+        gaEvent('add_to_cart');
+        fbEvent('AddToCart');
+      });
+    }
+  }
+
+  function boot() { document.querySelectorAll('[data-ac-root]').forEach(init); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+  document.addEventListener('shopify:section:load', boot);
+})();
+{% endraw %}
+</script>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Agenda Cheia - Vendas",
+  "tag": "section",
+  "class": "ac-section",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Produto" },
+    { "type": "checkbox", "id": "enable_tracking", "label": "Disparar eventos GA4/Meta (ative só se não houver app de pixel)", "default": false }
+  ],
+  "presets": [ { "name": "Agenda Cheia - Vendas" } ]
+}
+{% endschema %}
